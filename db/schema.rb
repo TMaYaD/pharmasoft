@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024134835) do
+ActiveRecord::Schema.define(version: 20161024170724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,42 @@ ActiveRecord::Schema.define(version: 20161024134835) do
     t.index ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   end
 
+  create_table "batches", force: :cascade do |t|
+    t.integer  "combination_id"
+    t.string   "code"
+    t.integer  "size"
+    t.decimal  "yield",           precision: 9, scale: 3
+    t.date     "manufactured_on"
+    t.date     "expiry_on"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.index ["combination_id"], name: "index_batches_on_combination_id", using: :btree
+  end
+
+  create_table "combinations", force: :cascade do |t|
+    t.string   "name"
+    t.string   "form"
+    t.string   "release_mode"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "license"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "components", force: :cascade do |t|
+    t.integer  "combination_id"
+    t.string   "raw_material"
+    t.decimal  "volume",         precision: 9, scale: 3
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.index ["combination_id"], name: "index_components_on_combination_id", using: :btree
+  end
+
   create_table "invoices", force: :cascade do |t|
     t.integer  "party_id"
     t.integer  "ref_number"
@@ -57,6 +93,16 @@ ActiveRecord::Schema.define(version: 20161024134835) do
     t.index ["party_id"], name: "index_invoices_on_party_id", using: :btree
   end
 
+  create_table "overages", force: :cascade do |t|
+    t.integer  "component_id"
+    t.integer  "batch_id"
+    t.decimal  "volume",       precision: 9, scale: 3
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.index ["batch_id"], name: "index_overages_on_batch_id", using: :btree
+    t.index ["component_id"], name: "index_overages_on_component_id", using: :btree
+  end
+
   create_table "parties", force: :cascade do |t|
     t.string   "name"
     t.decimal  "credit_limit", precision: 9, scale: 2
@@ -66,5 +112,42 @@ ActiveRecord::Schema.define(version: 20161024134835) do
     t.datetime "updated_at",                           null: false
   end
 
+  create_table "product_batches", force: :cascade do |t|
+    t.integer  "batch_id"
+    t.integer  "product_id"
+    t.decimal  "mrp",        precision: 6, scale: 2
+    t.decimal  "input",      precision: 9, scale: 2
+    t.integer  "output"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.index ["batch_id"], name: "index_product_batches_on_batch_id", using: :btree
+    t.index ["product_id"], name: "index_product_batches_on_product_id", using: :btree
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "manufactured_by_id"
+    t.integer  "marketed_by_id"
+    t.integer  "combination_id"
+    t.string   "packaging_type"
+    t.string   "size"
+    t.string   "primany_packing"
+    t.string   "secondary_packing"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["combination_id"], name: "index_products_on_combination_id", using: :btree
+    t.index ["manufactured_by_id"], name: "index_products_on_manufactured_by_id", using: :btree
+    t.index ["marketed_by_id"], name: "index_products_on_marketed_by_id", using: :btree
+  end
+
+  add_foreign_key "batches", "combinations"
+  add_foreign_key "components", "combinations"
   add_foreign_key "invoices", "parties"
+  add_foreign_key "overages", "batches"
+  add_foreign_key "overages", "components"
+  add_foreign_key "product_batches", "batches"
+  add_foreign_key "product_batches", "products"
+  add_foreign_key "products", "combinations"
+  add_foreign_key "products", "products", column: "manufactured_by_id"
+  add_foreign_key "products", "products", column: "marketed_by_id"
 end
