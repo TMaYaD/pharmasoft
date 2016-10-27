@@ -28,11 +28,13 @@ ActiveAdmin.register Batch do
       row :updated_at
     end
 
-    panel 'Overages' do
+    panel 'Batch Sheet' do
       table_for batch.overages do
         column :raw_material
         column :base_volume
-        column :volume
+        column 'Overage' do |overage|
+          best_in_place overage, :volume, as: :input, url: [:admin, overage]
+        end
       end
     end
 

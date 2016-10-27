@@ -27,6 +27,14 @@ GIT
       railties (>= 3.2, < 5.1)
       responders
 
+GIT
+  remote: git://github.com/bernat/best_in_place.git
+  revision: 332eda290cb133683a99d43a30321bab27d85e70
+  specs:
+    best_in_place (3.1.0)
+      actionpack (>= 3.2)
+      railties (>= 3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -229,6 +237,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin!
+  best_in_place!
   byebug
   coffee-rails (~> 4.2)
   devise
