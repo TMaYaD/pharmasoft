@@ -29,12 +29,10 @@ ActiveAdmin.register Batch do
     end
 
     panel 'Overages' do
-      table_for batch.combination.components do
+      table_for batch.overages do
         column :raw_material
+        column :base_volume
         column :volume
-        column :overage do
-          link_to 'Add Overage', '#'
-        end
       end
     end
 
