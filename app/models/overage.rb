@@ -7,4 +7,8 @@ class Overage < ApplicationRecord
   end
 
   delegate :raw_material, to: :component
+
+  def total_volume
+    base_volume + volume
+  end
 end

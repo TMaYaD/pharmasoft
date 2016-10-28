@@ -21,7 +21,9 @@ ActiveAdmin.register Batch do
       row :combination
       row :code
       row :size
-      row :yield
+      row :yield do |batch|
+        best_in_place batch, :yield, url: [:admin, batch]
+      end
       row :manufactured_on
       row :expiry_on
       row :created_at
@@ -33,7 +35,7 @@ ActiveAdmin.register Batch do
         column :raw_material
         column :base_volume
         column 'Overage' do |overage|
-          best_in_place overage, :volume, as: :input, url: [:admin, overage]
+          best_in_place overage, :volume, url: [:admin, overage]
         end
       end
     end

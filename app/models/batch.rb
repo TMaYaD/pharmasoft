@@ -6,6 +6,10 @@ class Batch < ApplicationRecord
 
   before_create :create_overages
 
+  def input_volume
+    overages.sum(&:total_volume)
+  end
+
   private
 
   def create_overages
