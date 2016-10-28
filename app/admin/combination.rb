@@ -1,5 +1,5 @@
 ActiveAdmin.register Combination do
-  permit_params :name, :form, :release_mode,
+  permit_params :name, :form,
                 components_attributes: [:id, :raw_material, :volume, :_destroy]
 
   form do |f|
@@ -18,7 +18,6 @@ ActiveAdmin.register Combination do
       row :id
       row :name
       row :form
-      row :release_mode
       row :created_at
       row :updated_at
     end
