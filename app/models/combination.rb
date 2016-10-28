@@ -2,11 +2,12 @@
 #
 # Table name: combinations
 #
-#  id         :integer          not null, primary key
-#  name       :string
-#  form       :integer          default("tablet")
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  name         :string
+#  form         :string
+#  release_mode :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 
 class Combination < ApplicationRecord

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'activeadmin', github: 'activeadmin'
 gem 'best_in_place', github: 'bernat/best_in_place'
+gem 'cancancan'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'devise_saml_authenticatable'
