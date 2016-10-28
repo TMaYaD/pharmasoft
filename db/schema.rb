@@ -58,9 +58,10 @@ ActiveRecord::Schema.define(version: 20161024170724) do
 
   create_table "combinations", force: :cascade do |t|
     t.string   "name"
-    t.integer  "form",       default: 0
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "form"
+    t.string   "release_mode"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "companies", force: :cascade do |t|
@@ -137,6 +138,14 @@ ActiveRecord::Schema.define(version: 20161024170724) do
     t.index ["combination_id"], name: "index_products_on_combination_id", using: :btree
     t.index ["manufactured_by_id"], name: "index_products_on_manufactured_by_id", using: :btree
     t.index ["marketed_by_id"], name: "index_products_on_marketed_by_id", using: :btree
+  end
+
+  create_table "raw_materials", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "form"
+    t.integer  "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "batches", "combinations"

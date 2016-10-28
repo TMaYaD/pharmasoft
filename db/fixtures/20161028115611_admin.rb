@@ -1,1 +1,1 @@
-AdminUser.seed_once :email, email: 'admin@darwin.co.in'
+AdminUser.seed_once :id, id: 1, email: 'admin@darwin.co.in'

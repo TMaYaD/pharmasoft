@@ -2,6 +2,7 @@ class Combination < ApplicationRecord
   enum form: [:tablet, :capsule, :ointment, :liquid_oral, :powder]
 
   has_many :components, dependent: :destroy
+  has_many :raw_materials, through: :components
 
   accepts_nested_attributes_for :components, allow_destroy: true
 

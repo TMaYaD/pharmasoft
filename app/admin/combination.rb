@@ -1,6 +1,6 @@
 ActiveAdmin.register Combination do
   permit_params :name, :form,
-                components_attributes: [:id, :raw_material, :volume, :_destroy]
+                components_attributes: [:id, :raw_material_id, :volume, :_destroy]
 
   form do |f|
     f.semantic_errors # shows errors on :base
