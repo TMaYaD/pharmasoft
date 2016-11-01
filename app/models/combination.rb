@@ -16,6 +16,10 @@ class Combination < ApplicationRecord
   has_many :components, dependent: :destroy
   has_many :raw_materials, through: :components
 
+  validates :name, presence: true
+  validates :form, presence: true
+
+
   has_paper_trail
 
   accepts_nested_attributes_for :components, allow_destroy: true

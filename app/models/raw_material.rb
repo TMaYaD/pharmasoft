@@ -17,6 +17,10 @@ class RawMaterial < ApplicationRecord
   has_many :components
   has_many :combinations, through: :components
 
+  validates :name, presence: true
+  validates :form, presence: true
+  validates :category, presence: true
+
   has_paper_trail
 
   def to_s

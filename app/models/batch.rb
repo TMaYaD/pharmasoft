@@ -30,6 +30,12 @@ class Batch < ApplicationRecord
 
   accepts_nested_attributes_for :overages, allow_destroy: true
 
+  validates :combination_id, presence: true
+  validates :code, presence: true
+  validates :size, presence: true
+  validates :manufactured_on, presence: true
+  validates :expiry_on, presence: true
+
   before_create :create_overages
 
   def input_volume

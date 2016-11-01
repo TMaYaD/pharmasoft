@@ -28,11 +28,20 @@
 #
 
 class Product < ApplicationRecord
+  enum packaging_type: [:box, :tube, :bottle]
+
   belongs_to :combination
   belongs_to :manufactured_by, class_name: 'Product'
   belongs_to :marketed_by, class_name: 'Product'
 
   has_paper_trail
+
+  validates :name, presence: true
+  validates :manufactured_by_id, presence: true
+  validates :marketed_by_id, presence: true
+  validates :combination_id, presence: true
+  validates :packaging_type, presence: true
+  validates :size, presence: true
 
   def to_s
     name
