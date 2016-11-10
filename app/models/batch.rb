@@ -47,7 +47,19 @@ class Batch < ApplicationRecord
     "##{code} (#{combination})"
   end
 
+  def size_multiplier
+     size / combination.standard_size
+  end
+
+  def unused_volume
+     size - product_batches.sum(:size)
+  end
+
   private
+
+  def set_nest(product_batch)
+    product_batch.batch ||= self
+  end
 
   def create_overages
     combination.components.each do |c|

@@ -1,5 +1,6 @@
 ActiveAdmin.register Batch do
-  permit_params :combination_id, :code, :size, :yield, :manufactured_on, :expiry_on
+  permit_params :combination_id, :code, :size, :yield, :manufactured_on, :expiry_on,
+    product_batches_attributes: [:id, :product_id, :size]
 
   index do
     id_column
@@ -15,6 +16,18 @@ ActiveAdmin.register Batch do
     actions
   end
 
+  form do |f|
+    f.semantic_errors
+    f.inputs
+
+    f.has_many :product_batches, heading: 'Products', allow_destroy: true do |c|
+        c.inputs :product, :size
+    end
+
+    f.actions
+  end
+
+
   show do
     attributes_table do
       row :id
@@ -28,6 +41,7 @@ ActiveAdmin.register Batch do
       row :expiry_on
       row :created_at
       row :updated_at
+      row :unused_volume
     end
 
     panel 'Batch Sheet' do
@@ -40,6 +54,16 @@ ActiveAdmin.register Batch do
       end
     end
 
+    panel 'Product Batches' do
+      table_for batch.product_batches do
+        column :product
+        column :size
+      end
+    end
+
+
+
     active_admin_comments
   end
+
 end

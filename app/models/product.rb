@@ -28,11 +28,12 @@
 #
 
 class Product < ApplicationRecord
-  enum packaging_type: [:box, :tube, :bottle]
+  enum packaging_type: [:alu_alu, :blister, :strip, :amber_bottle, :clear_bottle, ]
+  PRIMARY_PACKAGINGS = []
 
   belongs_to :combination
-  belongs_to :manufactured_by, class_name: 'Product'
-  belongs_to :marketed_by, class_name: 'Product'
+  belongs_to :manufactured_by, class_name: 'Company'
+  belongs_to :marketed_by, class_name: 'Company'
 
   has_paper_trail
 

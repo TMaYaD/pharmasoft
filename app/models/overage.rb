@@ -28,10 +28,10 @@ class Overage < ApplicationRecord
   has_paper_trail
 
   def base_volume
-    component.volume * batch.size / batch.combination.standard_size
+    component.volume * batch.size_multiplier
   end
 
-  delegate :raw_material, to: :component
+  #delegate :raw_material, to: :component
 
   def total_volume
     base_volume + volume
