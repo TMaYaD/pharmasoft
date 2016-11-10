@@ -45,11 +45,11 @@ ActiveAdmin.register Batch do
     end
 
     panel 'Batch Sheet' do
-      table_for batch.overages do
+      table_for batch.batch_inputs do
         column :raw_material
         column :base_volume
-        column 'Overage' do |overage|
-          best_in_place overage, :volume, url: [:admin, overage]
+        column 'Batch_Input' do |batch_input|
+          best_in_place batch_input, :overage, url: [:admin, batch_input]
         end
       end
     end

@@ -23,13 +23,13 @@
 
 class Batch < ApplicationRecord
   belongs_to :combination
-  has_many :overages, dependent: :destroy
-  has_many :raw_materials, through: :overages
+  has_many :batch_inputs, dependent: :destroy
+  has_many :raw_materials, through: :batch_inputs
   has_many :product_batches, dependent: :destroy, :before_add => :set_nest
 
   has_paper_trail
 
-  accepts_nested_attributes_for :overages, allow_destroy: true
+  accepts_nested_attributes_for :batch_inputs, allow_destroy: true
   accepts_nested_attributes_for :product_batches, allow_destroy: true
 
   validates :combination_id, :code, :size, presence: true
@@ -37,10 +37,10 @@ class Batch < ApplicationRecord
   validates_date :expiry_on, :after => :manufactured_on
 
 
-  before_create :create_overages
+  before_create :create_batch_inputs
 
   def input_volume
-    overages.sum(&:total_volume)
+    batch_inputs.sum(&:total_volume)
   end
 
   def to_s
@@ -48,7 +48,7 @@ class Batch < ApplicationRecord
   end
 
   def size_multiplier
-     size / combination.standard_size
+     size.to_d / combination.standard_size
   end
 
   def unused_volume
@@ -61,9 +61,9 @@ class Batch < ApplicationRecord
     product_batch.batch ||= self
   end
 
-  def create_overages
+  def create_batch_inputs
     combination.components.each do |c|
-      overages.build component: c, volume: 0
+      batch_inputs.build component: c, overage: 0
     end
   end
 end

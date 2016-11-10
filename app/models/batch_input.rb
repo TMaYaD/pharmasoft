@@ -1,26 +1,26 @@
 # == Schema Information
 #
-# Table name: overages
+# Table name: batch_inputs
 #
 #  id           :integer          not null, primary key
 #  component_id :integer
 #  batch_id     :integer
-#  volume       :decimal(9, 3)
+#  overage      :decimal(9, 3)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
 # Indexes
 #
-#  index_overages_on_batch_id      (batch_id)
-#  index_overages_on_component_id  (component_id)
+#  index_batch_inputs_on_batch_id      (batch_id)
+#  index_batch_inputs_on_component_id  (component_id)
 #
 # Foreign Keys
 #
-#  fk_rails_334aa08429  (component_id => components.id)
-#  fk_rails_c1d67d4627  (batch_id => batches.id)
+#  fk_rails_7fa74f0baa  (component_id => components.id)
+#  fk_rails_ec3e2d0a7e  (batch_id => batches.id)
 #
 
-class Overage < ApplicationRecord
+class BatchInput < ApplicationRecord
   belongs_to :component
   belongs_to :batch
   has_one :raw_material, through: :component
