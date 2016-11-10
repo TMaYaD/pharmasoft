@@ -23,10 +23,17 @@
 #
 
 class ProductBatch < ApplicationRecord
-  belongs_to :batch
+  belongs_to :batch, inverse_of: :product_batches
   belongs_to :product
 
   has_paper_trail
+
+  validates :product_id, presence: true,
+                         inclusion: {
+                           in: ->(record) do
+                             record.batch.combination.product_ids
+                           end
+                         }
 
   def to_s
     "##{batch.code} (#{product})"

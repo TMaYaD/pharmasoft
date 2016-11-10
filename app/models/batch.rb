@@ -25,16 +25,17 @@ class Batch < ApplicationRecord
   belongs_to :combination
   has_many :overages, dependent: :destroy
   has_many :raw_materials, through: :overages
+  has_many :product_batches, dependent: :destroy, :before_add => :set_nest
 
   has_paper_trail
 
   accepts_nested_attributes_for :overages, allow_destroy: true
+  accepts_nested_attributes_for :product_batches, allow_destroy: true
 
-  validates :combination_id, presence: true
-  validates :code, presence: true
-  validates :size, presence: true
-  validates :manufactured_on, presence: true
-  validates :expiry_on, presence: true
+  validates :combination_id, :code, :size, presence: true
+  validates_date :manufactured_on
+  validates_date :expiry_on, :after => :manufactured_on
+
 
   before_create :create_overages
 

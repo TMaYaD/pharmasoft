@@ -12,8 +12,7 @@
 class Company < ApplicationRecord
   has_paper_trail
 
-  validates :name, presence: true
-  validates :license, presence: true
+  validates :name, :license, presence: true
 
   def to_s
     name

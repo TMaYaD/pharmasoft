@@ -25,7 +25,6 @@ class Component < ApplicationRecord
   has_paper_trail
 
   validates :raw_material_id, presence: true
-  #validates :volume, presence: true
   validates :volume, numericality: true
 
   def to_s

@@ -15,10 +15,9 @@ class Combination < ApplicationRecord
 
   has_many :components, dependent: :destroy
   has_many :raw_materials, through: :components
+  has_many :products
 
-  validates :name, presence: true
-  validates :form, presence: true
-
+  validates :name, :form, presence: true
 
   has_paper_trail
 
