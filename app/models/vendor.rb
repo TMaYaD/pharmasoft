@@ -12,5 +12,6 @@
 #
 
 class Vendor < ApplicationRecord
+  validates :name, :address, :phone, :email, presence: true
   has_paper_trail
 end
