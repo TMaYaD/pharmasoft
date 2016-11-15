@@ -30,4 +30,10 @@ class RawMaterialUsage < ApplicationRecord
   end
 
   has_paper_trail
+
+  after_save do
+    raw_material_batch.cache_available_quantity
+    raw_material_batch.save
+  end
+
 end

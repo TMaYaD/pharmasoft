@@ -34,4 +34,10 @@ class RawMaterialBatch < ApplicationRecord
   validates_date :expiry_on, :after => :manufactured_on
   has_paper_trail
 
+  before_save :cache_available_quantity
+
+
+  def cache_available_quantity
+    self.available_quantity_cache = self.quantity - raw_material_usages.sum(:quantity)
+  end
 end

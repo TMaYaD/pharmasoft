@@ -8,7 +8,7 @@ ActiveAdmin.register RawMaterialBatch do
     column :batch_no
     column :quantity
     column :vendor
-    column :total_used_cache
+    column :available_quantity_cache
     column :manufactured_on
     column :expiry_on
     column :created_at
@@ -27,7 +27,7 @@ ActiveAdmin.register RawMaterialBatch do
       row :batch_no
       row :quantity
       row :vendor
-      row :total_used_cache
+      row :available_quantity_cache
       row :manufactured_on
       row :expiry_on
       row :created_at
