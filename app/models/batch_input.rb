@@ -23,6 +23,7 @@
 class BatchInput < ApplicationRecord
   belongs_to :component
   belongs_to :batch
+  belongs_to :raw_material_usage
   has_one :raw_material, through: :component
 
   has_paper_trail

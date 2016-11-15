@@ -27,9 +27,11 @@
 class RawMaterialBatch < ApplicationRecord
   belongs_to :raw_material
   belongs_to :vendor
+  has_many :raw_material_usages
 
   validates :raw_material_id, :vendor_id, :quantity, :batch_no, presence: true
   validates_date :manufactured_on
   validates_date :expiry_on, :after => :manufactured_on
   has_paper_trail
+
 end

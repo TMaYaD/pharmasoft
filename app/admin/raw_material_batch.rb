@@ -3,6 +3,7 @@ ActiveAdmin.register RawMaterialBatch do
 
   index do
     id_column
+
     column :raw_material
     column :batch_no
     column :quantity
@@ -14,5 +15,31 @@ ActiveAdmin.register RawMaterialBatch do
     column :updated_at
 
     actions
+  end
+
+  action_item :new_usage, only: :show do
+    link_to 'New Usage', [:new, :admin, resource, :raw_material_usage]
+  end
+
+  show do
+    attributes_table do
+      row :raw_material
+      row :batch_no
+      row :quantity
+      row :vendor
+      row :total_used_cache
+      row :manufactured_on
+      row :expiry_on
+      row :created_at
+      row :updated_at
+    end
+
+    panel 'Usage' do
+      table_for raw_material_batch.raw_material_usages do
+        column :used_on
+        column :description
+        column :quantity
+      end
+    end
   end
 end
