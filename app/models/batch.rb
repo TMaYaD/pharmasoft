@@ -23,7 +23,7 @@
 
 class Batch < ApplicationRecord
   belongs_to :combination
-  has_many :batch_inputs, dependent: :destroy
+  has_many :batch_inputs, dependent: :destroy, :before_add => :set_nest
   has_many :raw_materials, through: :batch_inputs
   has_many :product_batches, dependent: :destroy, :before_add => :set_nest
 
@@ -35,9 +35,10 @@ class Batch < ApplicationRecord
   validates :combination_id, :code, :size, presence: true
   validates_date :manufactured_on
   validates_date :expiry_on, :after => :manufactured_on
+  validate :batch_inputs_are_valid
 
-
-  before_create :create_batch_inputs
+  after_initialize :set_dates
+  before_validation :build_batch_inputs, on: :create
 
   def input_volume
     batch_inputs.sum(&:total_volume)
@@ -57,13 +58,28 @@ class Batch < ApplicationRecord
 
   private
 
-  def set_nest(product_batch)
-    product_batch.batch ||= self
+  def set_dates
+    self.manufactured_on ||= Date.today
+    self.expiry_on ||= 3.years.since
   end
 
-  def create_batch_inputs
+  def set_nest(child)
+    child.batch ||= self
+  end
+
+  def build_batch_inputs
     combination.components.each do |c|
       batch_inputs.build component: c, overage: 0
+    end
+  end
+
+  def batch_inputs_are_valid
+    batch_inputs.each do |batch_input|
+      next if batch_input.valid?
+
+      batch_input.errors.full_messages.each do |message|
+        errors.add :base, "#{batch_input.component}: #{message}"
+      end
     end
   end
 end

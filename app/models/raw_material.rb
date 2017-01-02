@@ -16,6 +16,7 @@ class RawMaterial < ApplicationRecord
 
   has_many :components
   has_many :combinations, through: :components
+  has_many :raw_material_batches
 
   validates :name, presence: true
   validates :form, presence: true

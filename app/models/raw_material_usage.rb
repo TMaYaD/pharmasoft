@@ -24,6 +24,7 @@
 
 class RawMaterialUsage < ApplicationRecord
   belongs_to :raw_material_batch
+  belongs_to :batch_input
 
   def after_initialize
     self.used_on ||= Date.today

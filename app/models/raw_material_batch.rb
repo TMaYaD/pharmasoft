@@ -38,6 +38,10 @@ class RawMaterialBatch < ApplicationRecord
 
 
   def cache_available_quantity
-    self.available_quantity_cache = self.quantity - raw_material_usages.sum(:quantity)
+    self.available_quantity_cache = self.quantity - used_quantity
+  end
+
+  def used_quantity
+    @used_quantity ||= raw_material_usages.sum(:quantity)
   end
 end
