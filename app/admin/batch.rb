@@ -1,4 +1,6 @@
 ActiveAdmin.register Batch do
+  active_admin_import
+
   permit_params :combination_id, :code, :size, :yield, :manufactured_on, :expiry_on,
     product_batches_attributes: [:id, :product_id, :size]
 

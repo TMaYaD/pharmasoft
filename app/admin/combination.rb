@@ -1,4 +1,6 @@
 ActiveAdmin.register Combination do
+  active_admin_import
+
   permit_params :name, :form,
                 components_attributes: [:id, :raw_material_id, :volume, :_destroy]
 

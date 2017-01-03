@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'activeadmin', github: 'activeadmin'
+gem 'active_admin_import' , github: 'activeadmin-plugins/active_admin_import'
 gem 'best_in_place', github: 'bernat/best_in_place'
 gem 'cancancan'
 gem 'coffee-rails', '~> 4.2'

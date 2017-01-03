@@ -7,6 +7,7 @@ class Ability
   end
 
   def admin
+    can :import, :all
     can :manage, :all
   end
 

@@ -1,4 +1,6 @@
 ActiveAdmin.register RawMaterialBatch do
+  active_admin_import
+
   permit_params :quantity, :batch_no, :manufactured_on, :expiry_on, :raw_material_id, :vendor_id
 
   index do

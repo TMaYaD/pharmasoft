@@ -1,5 +1,7 @@
 ActiveAdmin.register RawMaterialBatch
 ActiveAdmin.register RawMaterialUsage do
+  active_admin_import
+
   belongs_to :raw_material_batch
   permit_params :quantity, :description, :used_on, :raw_material_id
 
@@ -8,7 +10,7 @@ ActiveAdmin.register RawMaterialUsage do
       parent ? redirect_to(parent_path) : super
     end
   end
-  
+
   form do |f|
     f.semantic_errors
 

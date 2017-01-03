@@ -1,4 +1,6 @@
 ActiveAdmin.register Product do
+  active_admin_import
+
   permit_params :name,
                 :manufactured_by_id,
                 :marketed_by_id,
