@@ -49,4 +49,12 @@ class AdminUser < ApplicationRecord
   def to_s
     email
   end
+
+  def lock=(value)
+    self.locked_at = ActiveRecord::Type::Boolean.new.deserialize(value) ? (locked_at || Time.zone.now) : nil
+  end
+
+  def lock
+    !!locked_at
+  end
 end
