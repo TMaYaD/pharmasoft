@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 ActiveAdmin.register AdminUser do
   permit_params :email, :role, :password, :password_confirmation
 
@@ -27,5 +30,4 @@ ActiveAdmin.register AdminUser do
     end
     f.actions
   end
-
 end

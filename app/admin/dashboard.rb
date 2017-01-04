@@ -1,7 +1,10 @@
-ActiveAdmin.register_page 'Dashboard' do
-  menu priority: 1, label: proc{ I18n.t('active_admin.dashboard') }
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
 
-  content title: proc{ I18n.t('active_admin.dashboard') } do
+ActiveAdmin.register_page 'Dashboard' do
+  menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
+
+  content title: proc { I18n.t('active_admin.dashboard') } do
     section 'Recently updated content' do
       versions = active_admin_authorization.scope_collection(PaperTrail::Version)
                                            .order('id desc')

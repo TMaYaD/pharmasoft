@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 begin
   load File.expand_path('../spring', __FILE__)
 rescue LoadError => e

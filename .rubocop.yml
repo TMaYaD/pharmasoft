@@ -1,0 +1,46 @@
+# Common configuration.
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+
+Rails:
+  Enabled: true
+
+##################### Style ##################################
+
+Style/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/Copyright:
+  Enabled: true
+  AutocorrectNotice: "# Copyright (c) 2016 LoonyBin\n"
+  Notice: '^# Copyright \(c\) 2[0-9]{3} .+'
+
+Style/Documentation:
+  Exclude:
+    - db/migrate/*
+
+Style/IfUnlessModifier:
+  MaxLineLength: 120
+
+Style/NonNilCheck:
+  IncludeSemanticChanges: true
+
+Style/TrivialAccessors:
+  ExactNameMatch: false
+
+Style/WhileUntilModifier:
+  MaxLineLength: 120
+
+##################### Metrics ##################################
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*

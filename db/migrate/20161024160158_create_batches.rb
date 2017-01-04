@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 class CreateBatches < ActiveRecord::Migration[5.0]
   def change
     create_table :batches do |t|

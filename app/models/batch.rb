@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: batches
@@ -23,9 +26,9 @@
 
 class Batch < ApplicationRecord
   belongs_to :combination
-  has_many :batch_inputs, dependent: :destroy, :before_add => :set_nest
+  has_many :batch_inputs, dependent: :destroy, before_add: :set_nest
   has_many :raw_materials, through: :batch_inputs
-  has_many :product_batches, dependent: :destroy, :before_add => :set_nest
+  has_many :product_batches, dependent: :destroy, before_add: :set_nest
 
   has_paper_trail
 
@@ -34,7 +37,7 @@ class Batch < ApplicationRecord
 
   validates :combination_id, :code, :size, presence: true
   validates_date :manufactured_on
-  validates_date :expiry_on, :after => :manufactured_on
+  validates_date :expiry_on, after: :manufactured_on
   validate :batch_inputs_are_valid
 
   after_initialize :set_dates
@@ -49,11 +52,11 @@ class Batch < ApplicationRecord
   end
 
   def size_multiplier
-     size.to_d / combination.standard_size
+    size.to_d / combination.standard_size
   end
 
   def unused_volume
-     size - product_batches.sum(:size)
+    size - product_batches.sum(:size)
   end
 
   private

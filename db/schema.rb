@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028171421) do
+ActiveRecord::Schema.define(version: 20161229080716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,16 @@ ActiveRecord::Schema.define(version: 20161028171421) do
     t.index ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   end
 
+  create_table "batch_inputs", force: :cascade do |t|
+    t.integer  "component_id"
+    t.integer  "batch_id"
+    t.decimal  "overage",      precision: 9, scale: 3
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.index ["batch_id"], name: "index_batch_inputs_on_batch_id", using: :btree
+    t.index ["component_id"], name: "index_batch_inputs_on_component_id", using: :btree
+  end
+
   create_table "batches", force: :cascade do |t|
     t.integer  "combination_id"
     t.string   "code"
@@ -59,10 +69,9 @@ ActiveRecord::Schema.define(version: 20161028171421) do
 
   create_table "combinations", force: :cascade do |t|
     t.string   "name"
-    t.string   "form"
-    t.string   "release_mode"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "form",       default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "companies", force: :cascade do |t|
@@ -74,43 +83,12 @@ ActiveRecord::Schema.define(version: 20161028171421) do
 
   create_table "components", force: :cascade do |t|
     t.integer  "combination_id"
-    t.string   "raw_material"
-    t.decimal  "volume",         precision: 9, scale: 3
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.integer  "raw_material_id"
+    t.decimal  "volume",          precision: 9, scale: 3
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.index ["combination_id"], name: "index_components_on_combination_id", using: :btree
-  end
-
-  create_table "invoices", force: :cascade do |t|
-    t.integer  "party_id"
-    t.integer  "ref_number"
-    t.decimal  "amount",     precision: 9, scale: 2
-    t.date     "billed_on"
-    t.date     "due_on"
-    t.integer  "type"
-    t.integer  "status"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.index ["party_id"], name: "index_invoices_on_party_id", using: :btree
-  end
-
-  create_table "overages", force: :cascade do |t|
-    t.integer  "component_id"
-    t.integer  "batch_id"
-    t.decimal  "volume",       precision: 9, scale: 3
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.index ["batch_id"], name: "index_overages_on_batch_id", using: :btree
-    t.index ["component_id"], name: "index_overages_on_component_id", using: :btree
-  end
-
-  create_table "parties", force: :cascade do |t|
-    t.string   "name"
-    t.decimal  "credit_limit", precision: 9, scale: 2
-    t.string   "email"
-    t.integer  "phone"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.index ["raw_material_id"], name: "index_components_on_raw_material_id", using: :btree
   end
 
   create_table "product_batches", force: :cascade do |t|
@@ -121,6 +99,7 @@ ActiveRecord::Schema.define(version: 20161028171421) do
     t.integer  "output"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.integer  "size"
     t.index ["batch_id"], name: "index_product_batches_on_batch_id", using: :btree
     t.index ["product_id"], name: "index_product_batches_on_product_id", using: :btree
   end
@@ -130,7 +109,7 @@ ActiveRecord::Schema.define(version: 20161028171421) do
     t.integer  "manufactured_by_id"
     t.integer  "marketed_by_id"
     t.integer  "combination_id"
-    t.string   "packaging_type"
+    t.integer  "packaging_type"
     t.string   "size"
     t.string   "primany_packing"
     t.string   "secondary_packing"
@@ -141,10 +120,45 @@ ActiveRecord::Schema.define(version: 20161028171421) do
     t.index ["marketed_by_id"], name: "index_products_on_marketed_by_id", using: :btree
   end
 
+  create_table "raw_material_batches", force: :cascade do |t|
+    t.integer  "raw_material_id"
+    t.integer  "vendor_id"
+    t.decimal  "quantity",                 precision: 8, scale: 3
+    t.decimal  "available_quantity_cache", precision: 8, scale: 3
+    t.string   "batch_no"
+    t.date     "manufactured_on"
+    t.date     "expiry_on"
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
+    t.index ["raw_material_id"], name: "index_raw_material_batches_on_raw_material_id", using: :btree
+    t.index ["vendor_id"], name: "index_raw_material_batches_on_vendor_id", using: :btree
+  end
+
+  create_table "raw_material_usages", force: :cascade do |t|
+    t.integer  "raw_material_batch_id"
+    t.string   "description"
+    t.decimal  "quantity",              precision: 10, scale: 3
+    t.date     "used_on"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.integer  "batch_input_id"
+    t.index ["batch_input_id"], name: "index_raw_material_usages_on_batch_input_id", using: :btree
+    t.index ["raw_material_batch_id"], name: "index_raw_material_usages_on_raw_material_batch_id", using: :btree
+  end
+
   create_table "raw_materials", force: :cascade do |t|
     t.string   "name"
     t.integer  "form"
     t.integer  "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "vendors", force: :cascade do |t|
+    t.string   "name"
+    t.text     "address"
+    t.string   "phone"
+    t.string   "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -159,14 +173,18 @@ ActiveRecord::Schema.define(version: 20161028171421) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
+  add_foreign_key "batch_inputs", "batches"
+  add_foreign_key "batch_inputs", "components"
   add_foreign_key "batches", "combinations"
   add_foreign_key "components", "combinations"
-  add_foreign_key "invoices", "parties"
-  add_foreign_key "overages", "batches"
-  add_foreign_key "overages", "components"
+  add_foreign_key "components", "raw_materials"
   add_foreign_key "product_batches", "batches"
   add_foreign_key "product_batches", "products"
   add_foreign_key "products", "combinations"
-  add_foreign_key "products", "products", column: "manufactured_by_id"
-  add_foreign_key "products", "products", column: "marketed_by_id"
+  add_foreign_key "products", "companies", column: "manufactured_by_id"
+  add_foreign_key "products", "companies", column: "marketed_by_id"
+  add_foreign_key "raw_material_batches", "raw_materials"
+  add_foreign_key "raw_material_batches", "vendors"
+  add_foreign_key "raw_material_usages", "batch_inputs"
+  add_foreign_key "raw_material_usages", "raw_material_batches"
 end

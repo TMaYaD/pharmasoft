@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: batch_inputs
@@ -16,8 +19,8 @@
 #
 # Foreign Keys
 #
-#  fk_rails_7fa74f0baa  (component_id => components.id)
-#  fk_rails_ec3e2d0a7e  (batch_id => batches.id)
+#  fk_rails_334aa08429  (component_id => components.id)
+#  fk_rails_c1d67d4627  (batch_id => batches.id)
 #
 
 class BatchInput < ApplicationRecord
@@ -36,7 +39,7 @@ class BatchInput < ApplicationRecord
     component.volume * batch.size_multiplier
   end
 
-  #delegate :raw_material, to: :component
+  # delegate :raw_material, to: :component
 
   def total_volume
     @total_volume ||= base_volume + overage
@@ -60,17 +63,16 @@ class BatchInput < ApplicationRecord
       q = [required_quantity, rmb.available_quantity_cache].min
       required_quantity -= q
       raw_material_usages.build raw_material_batch: rmb,
-                                description: "Batch ##{batch.code}",
-                                quantity: q,
-                                used_on: batch.created_at
-      break if required_quantity == 0
-
+                                description:        "Batch ##{batch.code}",
+                                quantity:           q,
+                                used_on:            batch.created_at
+      break if required_quantity.zero?
     end
   end
 
   def available_batches
     @available_batches ||= raw_material.raw_material_batches
-                                       .where("available_quantity_cache > 0")
+                                       .where('available_quantity_cache > 0')
                                        .order(expiry_on: :asc)
   end
 end

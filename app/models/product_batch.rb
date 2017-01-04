@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: product_batches
@@ -10,6 +13,7 @@
 #  output     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  size       :integer
 #
 # Indexes
 #
@@ -28,9 +32,9 @@ class ProductBatch < ApplicationRecord
 
   has_paper_trail
 
-  validates :product_id, presence: true,
+  validates :product_id, presence:  true,
                          inclusion: {
-                           in: ->(record) do
+                           in: lambda do |record|
                              record.batch.combination.product_ids
                            end
                          }

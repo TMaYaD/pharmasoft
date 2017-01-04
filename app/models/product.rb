@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: products
@@ -7,7 +10,7 @@
 #  manufactured_by_id :integer
 #  marketed_by_id     :integer
 #  combination_id     :integer
-#  packaging_type     :string
+#  packaging_type     :integer
 #  size               :string
 #  primany_packing    :string
 #  secondary_packing  :string
@@ -22,14 +25,14 @@
 #
 # Foreign Keys
 #
-#  fk_rails_1df2897474  (marketed_by_id => products.id)
-#  fk_rails_7395ec4105  (manufactured_by_id => products.id)
+#  fk_rails_1df2897474  (marketed_by_id => companies.id)
+#  fk_rails_7395ec4105  (manufactured_by_id => companies.id)
 #  fk_rails_e58eb4ddc6  (combination_id => combinations.id)
 #
 
 class Product < ApplicationRecord
-  enum packaging_type: [:alu_alu, :blister, :strip, :amber_bottle, :clear_bottle, ]
-  PRIMARY_PACKAGINGS = []
+  enum packaging_type: [:alu_alu, :blister, :strip, :amber_bottle, :clear_bottle]
+  PRIMARY_PACKAGINGS = [].freeze
 
   belongs_to :combination
   belongs_to :manufactured_by, class_name: 'Company'

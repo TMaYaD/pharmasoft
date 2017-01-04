@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: raw_material_batches
@@ -31,14 +34,13 @@ class RawMaterialBatch < ApplicationRecord
 
   validates :raw_material_id, :vendor_id, :quantity, :batch_no, presence: true
   validates_date :manufactured_on
-  validates_date :expiry_on, :after => :manufactured_on
+  validates_date :expiry_on, after: :manufactured_on
   has_paper_trail
 
   before_save :cache_available_quantity
 
-
   def cache_available_quantity
-    self.available_quantity_cache = self.quantity - used_quantity
+    self.available_quantity_cache = quantity - used_quantity
   end
 
   def used_quantity

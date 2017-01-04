@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: combinations
 #
-#  id           :integer          not null, primary key
-#  name         :string
-#  form         :string
-#  release_mode :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :integer          not null, primary key
+#  name       :string
+#  form       :integer          default("tablet")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 class Combination < ApplicationRecord
@@ -32,10 +34,10 @@ class Combination < ApplicationRecord
   end
 
   STANDARD_SIZES = {
-    tablet: 1_00_000,
-    capsule: 1_00_000,
-    ointment: 60,
+    tablet:      100_000,
+    capsule:     100_000,
+    ointment:    60,
     liquid_oral: 500,
-    powder: 500
+    powder:      500
   }.freeze
 end

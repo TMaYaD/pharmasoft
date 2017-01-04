@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 ActiveAdmin.register RawMaterialBatch
 ActiveAdmin.register RawMaterialUsage do
   active_admin_import
@@ -18,5 +21,4 @@ ActiveAdmin.register RawMaterialUsage do
 
     f.actions
   end
-
 end

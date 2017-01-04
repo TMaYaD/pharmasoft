@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 

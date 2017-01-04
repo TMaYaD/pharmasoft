@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: admin_users
@@ -33,13 +36,13 @@ class AdminUser < ApplicationRecord
          :rememberable,
          # :timeoutable,
          :trackable
-         # :validatable
+  # :validatable
 
   extend Devise::Models::Validatable::ClassMethods
 
-  validates :email, presence: true,
+  validates :email, presence:   true,
                     uniqueness: { if: :email_changed? },
-                    format: { with: email_regexp, if: :email_changed? }
+                    format:     { with: email_regexp, if: :email_changed? }
 
   has_paper_trail
 

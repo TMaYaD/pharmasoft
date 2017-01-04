@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 # == Schema Information
 #
 # Table name: raw_material_usages
@@ -36,5 +39,4 @@ class RawMaterialUsage < ApplicationRecord
     raw_material_batch.cache_available_quantity
     raw_material_batch.save
   end
-
 end

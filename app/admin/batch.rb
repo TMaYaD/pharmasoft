@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+# Copyright (c) 2016 LoonyBin
+
 ActiveAdmin.register Batch do
   active_admin_import
 
   permit_params :combination_id, :code, :size, :yield, :manufactured_on, :expiry_on,
-    product_batches_attributes: [:id, :product_id, :size]
+                product_batches_attributes: [:id, :product_id, :size]
 
   index do
     id_column
@@ -23,12 +26,11 @@ ActiveAdmin.register Batch do
     f.inputs
 
     f.has_many :product_batches, heading: 'Products', allow_destroy: true do |c|
-        c.inputs :product, :size
+      c.inputs :product, :size
     end
 
     f.actions
   end
-
 
   show do
     attributes_table do
@@ -63,9 +65,6 @@ ActiveAdmin.register Batch do
       end
     end
 
-
-
     active_admin_comments
   end
-
 end
