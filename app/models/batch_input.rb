@@ -34,6 +34,7 @@ class BatchInput < ApplicationRecord
   validate :required_raw_material_is_available
 
   before_create :build_raw_material_usage
+  before_update :build_raw_material_usage_for_overage
 
   def base_volume
     component.volume * batch.size_multiplier
@@ -52,9 +53,15 @@ class BatchInput < ApplicationRecord
   private
 
   def required_raw_material_is_available
-    available_quantity = available_batches.sum(:available_quantity_cache)
-    errors.add :base, "Only #{available_quantity} of #{total_volume} is available." if total_volume > available_quantity
+    if overage_was == nil then
+      available_quantity = available_batches.sum(:available_quantity_cache)
+      errors.add :base, "Only #{available_quantity} of #{total_volume} is available." if total_volume > available_quantity
+    else
+      available_quantity = available_batches.sum(:available_quantity_cache)
+      errors.add :base, "Only #{available_quantity} of #{overage - overage_was} is available." if overage - overage_was > available_quantity
+    end
   end
+
 
   def build_raw_material_usage
     required_quantity = total_volume
@@ -70,9 +77,37 @@ class BatchInput < ApplicationRecord
     end
   end
 
+def build_raw_material_usage_for_overage
+  required_quantity = overage - overage_was
+
+  if required_quantity > 0 then
+    available_batches.each do |rmb|
+      q = [required_quantity, rmb.available_quantity_cache].min
+      required_quantity -= q
+      raw_material_usages.build raw_material_batch: rmb,
+                                description: "Batch overage ##{batch.code}",
+                                quantity: q,
+                                used_on: batch.created_at
+     break if required_quantity == 0
+   end
+ else
+   raw_material_usages.build raw_material_batch: last_used_batch,
+                             description: "Batch overage returned ##{batch.code}",
+                             quantity: required_quantity,
+                             used_on: batch.created_at
+  end
+
+end
+
+
   def available_batches
     @available_batches ||= raw_material.raw_material_batches
                                        .where('available_quantity_cache > 0')
                                        .order(expiry_on: :asc)
+  end
+
+  def last_used_batch
+    @last_used_batch ||= raw_material.raw_material_batches
+                                       .order("updated_at").last
   end
 end

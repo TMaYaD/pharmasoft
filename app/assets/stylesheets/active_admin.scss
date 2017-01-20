@@ -24,3 +24,17 @@ form input[readonly] {
   background: inherit;
   border: none;
 }
+
+.purr {
+  position: fixed;
+  bottom: 30px;
+  right: 100px;
+  width: 250px;
+  padding: 20px;
+}
+
+.bip-flash-error {
+  background-color: #FCC;
+  border: solid 2px #C66;
+  &:first-letter { text-transform: uppercase; }
+}
